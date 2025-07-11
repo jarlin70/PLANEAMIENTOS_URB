@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Ampliación Vía Ramiro Prialé</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a4b8c;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --green: #27ae60;
+            --purple: #8e44ad;
+            --teal: #16a085;
+            --transition: all 0.4s ease;
+            --slide-bg: linear-gradient(135deg, #1a4b8c 0%, #2c3e50 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--slide-bg);
+            color: white;
+            line-height: 1.7;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Contenedor principal de diapositivas */
+        .slides-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Diapositivas */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.8s ease;
+            padding: 60px 40px 120px;
+            overflow-y: auto;
+            z-index: 1;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 2;
+        }
+        
+        .slide.prev {
+            transform: translateX(-100%);
+            opacity: 0.3;
+            z-index: 1;
+        }
+        
+        /* Contenido de diapositivas */
+        .slide-content {
+            width: 100%;
+            max-width: 1300px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Título de sección */
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        .section-title h2 {
+            font-size: 3rem;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 3px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .section-title p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 20px auto 0;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 400;
+        }
+        
+        /* Contenido flexible */
+        .section-content {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+        
+        .text-content {
+            flex: 1;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .text-content:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .image-content {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            transition: var(--transition);
+            max-height: 500px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .image-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .image-content:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Tarjetas */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .card-header {
+            padding: 25px;
+            background: rgba(231, 76, 60, 0.3);
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .card-body {
+            padding: 30px;
+        }
+        
+        .card-body ul {
+            padding-left: 25px;
+            margin-top: 15px;
+        }
+        
+        .card-body li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .card-body li::before {
+            content: "•";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+            top: -5px;
+        }
+        
+        /* Controles de navegación */
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .nav-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Indicador de progreso */
+        .progress-container {
+            position: fixed;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 900px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.215, 0.610, 0.355, 1);
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.5);
+        }
+        
+        /* Contador de diapositivas */
+        .slide-counter {
+            position: fixed;
+            bottom: 135px;
+            right: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            z-index: 100;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Tabla */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .data-table th, .data-table td {
+            padding: 18px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .data-table th {
+            background: rgba(231, 76, 60, 0.3);
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Timeline */
+        .timeline {
+            width: 100%;
+            height: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .timeline img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Decoraciones */
+        .decoration {
+            position: absolute;
+            z-index: 0;
+            animation: pulse 6s infinite ease-in-out;
+        }
+        
+        .circle-1 {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(243, 156, 18, 0.1) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+        }
+        
+        .circle-2 {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(231, 76, 60, 0.1) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+        }
+        
+        .circle-3 {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(39, 174, 96, 0.1) 0%, transparent 70%);
+            top: 50%;
+            left: 10%;
+        }
+        
+        .line-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(0deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+        
+        /* Full image slide */
+        .full-image {
+            width: 100%;
+            height: 80vh;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .full-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Viñetas */
+        .bullet-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .bullet-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .bullet-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .bullet-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .bullet-card ul {
+            padding-left: 20px;
+        }
+        
+        .bullet-card li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .bullet-card li::before {
+            content: "▹";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+        
+                /* Estilos para el diagrama de precedencia */
+        .precedence-container {
+           display: flex;
+           flex-direction: column;
+           height: 75%;
+           gap: 15px;
+           margin-bottom: 80px;
+           width: 100%;
+        }
+
+        .project-info {
+           display: flex;
+           gap: 20px;
+           height: 35%;
+           width: 100%;
+        }
+
+        .project-summary {
+           flex: 1;
+           background: rgba(255, 255, 255, 0.1);
+           border-radius: 15px;
+           padding: 15px;
+           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+           backdrop-filter: blur(10px);
+           border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .project-summary h3 {
+           color: #fff;
+           margin-bottom: 12px;
+           font-size: 1.2em;
+        }
+
+        .project-summary p {
+           color: rgba(255, 255, 255, 0.9);
+           margin-bottom: 8px;
+           line-height: 1.5;
+           font-size: 0.8em;
+        }
+
+        .activity-legend {
+           flex: 2;
+           background: rgba(255, 255, 255, 0.1);
+           border-radius: 15px;
+           padding: 15px;
+           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+           backdrop-filter: blur(10px);
+           border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .activity-legend h3 {
+           color: #fff;
+           margin-bottom: 12px;
+           font-size: 1.2em;
+        }
+
+        .legend-grid {
+           display: grid;
+           grid-template-columns: 1fr 1fr;
+           gap: 4px 15px;
+           max-height: 220px;
+           overflow-y: auto;
+        }
+
+        .legend-item {
+           display: flex;
+           align-items: center;
+           color: rgba(255, 255, 255, 0.9);
+           font-size: 0.75em;
+           line-height: 1.2;
+        }
+
+        .legend-id {
+           background: #ff6b35;
+           color: #fff;
+           padding: 1px 6px;
+           border-radius: 3px;
+           font-weight: bold;
+           margin-right: 8px;
+           min-width: 18px;
+           text-align: center;
+           flex-shrink: 0;
+           font-size: 0.9em;
+        }
+
+        .precedence-diagram {
+           height: 65%;
+           border-radius: 15px;
+           overflow: hidden;
+           box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+           border: 1px solid rgba(255, 255, 255, 0.15);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           width: 100%;
+        }
+
+        .precedence-diagram img {
+           width: 100%;
+           height: 100%;
+           object-fit: contain;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        /* Estilos para el marco teórico */
+        .rational-planning {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .rational-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+        
+        .rational-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .rational-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .rational-header {
+            padding: 20px;
+            background: rgba(52, 152, 219, 0.3);
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .rational-body {
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .rational-ideal, .rational-real {
+            flex: 1;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .rational-ideal {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid rgba(46, 204, 113, 0.4);
+        }
+        
+        .rational-real {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.4);
+        }
+        
+        .rational-ideal h4, .rational-real h4 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .rational-ideal ul, .rational-real ul {
+            padding-left: 20px;
+        }
+        
+        .rational-ideal li, .rational-real li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .rational-ideal li::before, .rational-real li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+        
+        .rational-ideal li::before {
+            color: #27ae60;
+        }
+        
+        .rational-real li::before {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="line-grid"></div>
+    <div class="decoration circle-1"></div>
+    <div class="decoration circle-2"></div>
+    <div class="decoration circle-3"></div>
+    
+    <!-- Contenedor de diapositivas -->
+    <div class="slides-container">
+        <!-- Portada -->
+        <div class="slide active" id="slide-cover">
+            <div class="slide-content">
+                <div style="text-align: center; max-width: 900px; margin: 0 auto;">
+                    <h1 style="font-size: 4.5rem; margin-bottom: 20px; color: var(--accent);">¿Qué falló en la extensión de la Autopista Ramiro Prialé?</h1>
+                    <p style="font-size: 2rem; margin-bottom: 30px; color: rgba(255, 255, 255, 0.9);">Análisis de problemas de planeamiento urbano en una obra paralizada</p>
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 15px; display: inline-block; margin-top: 30px; backdrop-filter: blur(10px);">
+                        <h3 style="font-size: 1.8rem; margin-bottom: 15px; color: var(--accent);">Universidad de Ingeniería y Tecnología</h3>
+                        <p style="font-size: 1.5rem;">Planeamiento de Sistemas Urbanos - Sección Teoría 1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Integrantes -->
+        <div class="slide" id="slide-team">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Integrantes del Equipo</h2>
+                    
+                </div>
+                
+                <div class="cards-container">
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(52, 152, 219, 0.3);">
+                            <h3>Deyvis David Enriquez Cachuan</h3>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Código:</strong> 202220224</p>
+                            <p><strong>Participación:</strong> 100%</p>
+                           
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(155, 89, 182, 0.3);">
+                            <h3>Lozano Ruiz Jariin</h3>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Código:</strong> 202220313</p>
+                            <p><strong>Participación:</strong> 100%</p>
+                           
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(46, 204, 113, 0.3);">
+                            <h3>Jhojan Flores Janampa</h3>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Código:</strong> 202220140</p>
+                            <p><strong>Participación:</strong> 100%</p>
+                           
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(241, 196, 15, 0.3);">
+                            <h3>Liliana Vega Paucar</h3>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Código:</strong> 202220082</p>
+                            <p><strong>Participación:</strong> 100%</p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Índice -->
+        <div class="slide" id="slide-index">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Índice de Contenidos</h2>
+                    <p>Estructura del análisis sobre el proyecto vial</p>
+                </div>
+                
+                <div class="bullet-points">
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-1"></i> Introducción</h3>
+                        <ul>
+                            <li>Contexto urbano de Lima</li>
+                            <li>Desafíos de infraestructura vial</li>
+                            <li>Planteamiento del problema</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-2"></i> Objetivos</h3>
+                        <ul>
+                            <li>Objetivo principal</li>
+                            <li>Objetivos secundarios</li>
+                            <li>Metodología de análisis</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-3"></i> Marco Teórico</h3>
+                        <ul>
+                            <li>Método de planificación racional</li>
+                            <li>Principios teóricos</li>
+                            <li>Aplicación al caso</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-4"></i> Contexto Urbano</h3>
+                        <ul>
+                            <li>Crecimiento de Lima</li>
+                            <li>Zonas afectadas</li>
+                            <li>Justificación del proyecto</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-5"></i> Desarrollo del Proyecto</h3>
+                        <ul>
+                            <li>Componentes principales</li>
+                            <li>Actores involucrados</li>
+                            <li>Cronología de ejecución</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-6"></i> Problemas Identificados</h3>
+                        <ul>
+                            <li>Gestión y retrasos</li>
+                            <li>Impacto social</li>
+                            <li>Falta de planificación</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-7"></i> Impacto Social</h3>
+                        <ul>
+                            <li>Desplazamientos forzosos</li>
+                            <li>Conflictos con comunidades</li>
+                            <li>Falta de reasentamiento</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-8"></i> Impacto Ambiental</h3>
+                        <ul>
+                            <li>Riesgos naturales</li>
+                            <li>Modificación del cauce</li>
+                            <li>Vulnerabilidad urbana</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-9"></i> Marco Normativo</h3>
+                        <ul>
+                            <li>Legislación aplicable</li>
+                            <li>Problemas de cumplimiento</li>
+                            <li>Conflictos legales</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-10"></i> Conclusiones</h3>
+                        <ul>
+                            <li>Lecciones aprendidas</li>
+                            <li>Recomendaciones</li>
+                            <li>Visión futura</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Introducción -->
+        <div class="slide" id="slide-introduction">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Introducción</h2>
+                    <p>Desafíos de infraestructura vial en el crecimiento urbano de Lima</p>
+                </div>
+                <div class="section-content">
+                    <div class="text-content">
+                        <p>El crecimiento urbano acelerado en Lima ha generado múltiples desafíos en materia de infraestructura vial, conectividad y movilidad. La ciudad ha experimentado un desarrollo desigual, con zonas periféricas que carecen de acceso eficiente al sistema de transporte y sufren una elevada congestión vehicular.</p>
+                        
+                        <div style="background: rgba(231, 76, 60, 0.2); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <h3 style="color: var(--accent);"><i class="fas fa-exclamation-triangle"></i> Problema principal</h3>
+                            <p>La falta de liberación oportuna de los terrenos por donde debía trazarse la nueva vía, ocupados por asentamientos humanos y propiedades sin título formal, generó conflictos de desalojo y procesos legales prolongados.</p>
+                        </div>
+                        
+                        <p>Este trabajo tiene como objetivo investigar en profundidad el caso de la ampliación de la Vía Ramiro Prialé, analizando las causas de los problemas surgidos durante su planificación y ejecución, así como sus impactos sociales, urbanos y ambientales.</p>
+                    </div>
+                    <div class="image-content">
+                        <img src="1.jpg" alt="Contexto urbano de Lima">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Objetivos -->
+        <div class="slide" id="slide-objectives">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Objetivos del Estudio</h2>
+                    <p>Metas y alcance del análisis</p>
+                </div>
+                
+                <div class="cards-container">
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(46, 204, 113, 0.3);">
+                            <h3>Objetivo Principal</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Analizar los factores que originaron la paralización de la extensión de la Autopista Ramiro Prialé durante más de una década, identificando las fallas estructurales en el sistema de planeamiento urbano en Lima Metropolitana utilizando el método de Planificación Racional.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(155, 89, 182, 0.3);">
+                            <h3>Objetivos Secundarios</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li>Examinar los objetivos iniciales del proyecto y los métodos de planeamiento urbano utilizados</li>
+                                <li>Identificar actores públicos y privados involucrados y los conflictos entre ellos</li>
+                                <li>Evaluar los impactos sociales, urbanos y ambientales del proyecto</li>
+                                <li>Proponer recomendaciones para mejorar futuras intervenciones urbanas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Marco Teórico -->
+        <div class="slide" id="slide-theory">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Marco Teórico</h2>
+                    <p>Método de Planificación Racional</p>
+                </div>
+                
+                <div class="rational-planning">
+                    <h3 style="text-align: center; margin-bottom: 20px; color: var(--accent);">Comparación: Planificación Racional Ideal vs Real</h3>
+                    
+                    <div class="rational-grid">
+                        <div class="rational-card">
+                            <div class="rational-header">
+                                <h3>1. Identificación del Problema</h3>
+                            </div>
+                            <div class="rational-body">
+                                <div class="rational-ideal">
+                                    <h4><i class="fas fa-check-circle"></i> Ideal</h4>
+                                    <ul>
+                                        <li>Análisis exhaustivo de movilidad</li>
+                                        <li>Evaluación socioambiental</li>
+                                        <li>Enfoque integral</li>
+                                    </ul>
+                                </div>
+                                <div class="rational-real">
+                                    <h4><i class="fas fa-times-circle"></i> Real</h4>
+                                    <ul>
+                                        <li>Solo congestión vehicular</li>
+                                        <li>Sin alternativas de transporte</li>
+                                        <li>Enfoque vialista</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="rational-card">
+                            <div class="rational-header">
+                                <h3>2. Definición de Objetivos</h3>
+                            </div>
+                            <div class="rational-body">
+                                <div class="rational-ideal">
+                                    <h4><i class="fas fa-check-circle"></i> Ideal</h4>
+                                    <ul>
+                                        <li>Objetivos múltiples</li>
+                                        <li>Conectividad integral</li>
+                                        <li>Reducir desigualdades</li>
+                                    </ul>
+                                </div>
+                                <div class="rational-real">
+                                    <h4><i class="fas fa-times-circle"></i> Real</h4>
+                                    <ul>
+                                        <li>Objetivo único</li>
+                                        <li>Solo reducir congestión</li>
+                                        <li>Sin visión social</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="rational-card">
+                            <div class="rational-header">
+                                <h3>3. Análisis de Alternativas</h3>
+                            </div>
+                            <div class="rational-body">
+                                <div class="rational-ideal">
+                                    <h4><i class="fas fa-check-circle"></i> Ideal</h4>
+                                    <ul>
+                                        <li>Evaluación integral</li>
+                                        <li>Múltiples opciones</li>
+                                        <li>Análisis costo-beneficio</li>
+                                    </ul>
+                                </div>
+                                <div class="rational-real">
+                                    <h4><i class="fas fa-times-circle"></i> Real</h4>
+                                    <ul>
+                                        <li>Alternativa única</li>
+                                        <li>Solo una opción</li>
+                                        <li>Análisis limitado</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="rational-card">
+                            <div class="rational-header">
+                                <h3>4. Gestión del Suelo</h3>
+                            </div>
+                            <div class="rational-body">
+                                <div class="rational-ideal">
+                                    <h4><i class="fas fa-check-circle"></i> Ideal</h4>
+                                    <ul>
+                                        <li>Planificación anticipada</li>
+                                        <li>Gestión previa de predios</li>
+                                        <li>Participación comunitaria</li>
+                                    </ul>
+                                </div>
+                                <div class="rational-real">
+                                    <h4><i class="fas fa-times-circle"></i> Real</h4>
+                                    <ul>
+                                        <li>Gestión reactiva</li>
+                                        <li>Conflictos de desalojo</li>
+                                        <li>Oposición vecinal</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="rational-card">
+                            <div class="rational-header">
+                                <h3>5. Implementación</h3>
+                            </div>
+                            <div class="rational-body">
+                                <div class="rational-ideal">
+                                    <h4><i class="fas fa-check-circle"></i> Ideal</h4>
+                                    <ul>
+                                        <li>Ejecución coordinada</li>
+                                        <li>Cronograma realista</li>
+                                        <li>Monitoreo participativo</li>
+                                    </ul>
+                                </div>
+                                <div class="rational-real">
+                                    <h4><i class="fas fa-times-circle"></i> Real</h4>
+                                    <ul>
+                                        <li>Implementación problemática</li>
+                                        <li>Retrasos constantes</li>
+                                        <li>Escándalos de corrupción</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contexto Urbano -->
+        <div class="slide" id="slide-context">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Contexto Urbano</h2>
+                    <p>Expansión de Lima y justificación del proyecto</p>
+                </div>
+                
+                <div class="section-content">
+                    <div class="image-content">
+                        <img src="2.jpg" alt="Mapa de Lima">
+                    </div>
+                    <div class="text-content">
+                        <p>Lima Metropolitana, con más de 10 millones de habitantes, ha crecido de forma rápida y muchas veces desordenada. Este crecimiento ha generado una expansión hacia las periferias, donde el acceso a infraestructura vial, servicios básicos y transporte público es limitado.</p>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                            <div style="background: rgba(52, 152, 219, 0.2); padding: 15px; border-radius: 10px;">
+                                <h4>Distritos afectados</h4>
+                                <ul>
+                                    <li>Ate</li>
+                                    <li>Santa Anita</li>
+                                    <li>El Agustino</li>
+                                    <li>Chaclacayo</li>
+                                </ul>
+                            </div>
+                            
+                            <div style="background: rgba(46, 204, 113, 0.2); padding: 15px; border-radius: 10px;">
+                                <h4>Problemas de movilidad</h4>
+                                <ul>
+                                    <li>Congestión vehicular</li>
+                                    <li>Tiempos de viaje excesivos</li>
+                                    <li>Falta de alternativas de transporte</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <p>La extensión de la Vía Ramiro Prialé fue concebida como una solución para descongestionar las principales arterias viales y mejorar la conectividad con los distritos del este de Lima.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Desarrollo del Proyecto -->
+        <div class="slide" id="slide-development">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Desarrollo del Proyecto</h2>
+                    <p>Componentes y actores involucrados</p>
+                </div>
+                
+                <div class="cards-container">
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(241, 196, 15, 0.3);">
+                            <h3>Componentes Principales</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li>Ampliación de 20 km adicionales</li>
+                                <li>Autopista de cuatro carriles</li>
+                                <li>Pasos a desnivel y retornos</li>
+                                <li>Infraestructura complementaria</li>
+                                <li>Conexión con otras arterias</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(52, 152, 219, 0.3);">
+                            <h3>Actores Involucrados</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li>Municipalidad Metropolitana de Lima</li>
+                                <li>Rutas de Lima (concesionaria)</li>
+                                <li>Ministerio de Transportes</li>
+                                <li>Gobiernos distritales</li>
+                                <li>Comunidades locales</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Línea de Tiempo -->
+        <div class="slide" id="slide-timeline">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Línea de Tiempo</h2>
+                    <p>Cronología de la ejecución del proyecto</p>
+                </div>
+                
+                <div class="full-image">
+                    <img src="3.jpg" alt="Línea de tiempo">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Problemas Identificados -->
+        <div class="slide" id="slide-problems">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Problemas Identificados</h2>
+                    <p>Obstáculos estructurales, sociales y administrativos</p>
+                </div>
+                
+                <div class="cards-container">
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(231, 76, 60, 0.3);">
+                            <h3>Gestión y Retrasos</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li>Demora excesiva en la ejecución</li>
+                                <li>Cambios de gestión municipal</li>
+                                <li>Renegociaciones contractuales</li>
+                                <li>Escándalos de corrupción</li>
+                                <li>Problemas técnicos en diseño</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(155, 89, 182, 0.3);">
+                            <h3>Impacto Social</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li>Desplazamientos forzosos</li>
+                                <li>Falta de plan de reasentamiento</li>
+                                <li>Protestas y resistencia vecinal</li>
+                                <li>Pérdida de redes sociales</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(46, 204, 113, 0.3);">
+                            <h3>Falta de Planificación</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li>Enfoque vialista centrado en vehículos</li>
+                                <li>Poca articulación con transporte público</li>
+                                <li>Falta de componentes sostenibles</li>
+                                <li>Creación de barreras urbanas</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(241, 196, 15, 0.3);">
+                            <h3>Impacto Ambiental</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li>Vulnerabilidad a desbordes y huaycos</li>
+                                <li>Modificación del cauce del río</li>
+                                <li>Falta de evaluación ambiental</li>
+                                <li>Amplificación de vulnerabilidad</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Impacto Social -->
+        <div class="slide" id="slide-social">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Impacto Social</h2>
+                    <p>Conflictos con comunidades y desplazamientos</p>
+                </div>
+                
+                <div class="section-content">
+                    <div class="text-content">
+                        <p>La traza de la vía atraviesa zonas urbanas densamente pobladas, incluyendo asentamientos humanos establecidos desde hace décadas en las márgenes del río Rímac. Esto ha generado:</p>
+                        
+                        <ul>
+                            <li><strong>Desplazamientos forzosos:</strong> En sectores como Campoy, Huaycán y Cajamarquilla</li>
+                            <li><strong>Falta de reasentamiento:</strong> Ausencia de plan adecuado o compensaciones claras</li>
+                            <li><strong>Resistencia vecinal:</strong> Protestas ante la posibilidad de perder viviendas</li>
+                            <li><strong>Pérdida de redes:</strong> Comunidades destruidas tras décadas de consolidación</li>
+                        </ul>
+                        
+                        <div style="background: rgba(231, 76, 60, 0.2); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <p>"Esto evidencia una falta de enfoque social en el planeamiento, al no considerar que muchas de estas comunidades forman parte del tejido urbano consolidado de Lima Este"</p>
+                        </div>
+                    </div>
+                    <div class="image-content">
+                        <img src="4.jpg" alt="Impacto Social">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Impacto Ambiental -->
+        <div class="slide" id="slide-environment">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Impacto Ambiental</h2>
+                    <p>Riesgos naturales y vulnerabilidad</p>
+                </div>
+                
+                <div class="section-content">
+                    <div class="image-content">
+                        <img src="5.jpg" alt="Impacto Ambiental">
+                    </div>
+                    <div class="text-content">
+                        <p>El trazado propuesto bordea el río Rímac, lo que introduce riesgos e impactos importantes para la sostenibilidad del proyecto:</p>
+                        
+                        <ul>
+                            <li><strong>Vulnerabilidad a desastres:</strong> Desbordes, huaycos y movimientos de masa durante temporadas de lluvia</li>
+                            <li><strong>Modificación del cauce:</strong> Alteración que agrava problemas de erosión y ecosistemas locales</li>
+                            <li><strong>Evaluación insuficiente:</strong> Ausencia de evaluación ambiental estratégica sólida</li>
+                            <li><strong>Amplificación de riesgos:</strong> Construcción en zonas de alta pendiente y contacto con zonas informales</li>
+                        </ul>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                            <div style="background: rgba(46, 204, 113, 0.2); padding: 15px; border-radius: 10px;">
+                                <h4>Riesgos principales</h4>
+                                <ul>
+                                    <li>Inundaciones</li>
+                                    <li>Deslizamientos</li>
+                                    <li>Erosión de suelos</li>
+                                </ul>
+                            </div>
+                            
+                            <div style="background: rgba(241, 196, 15, 0.2); padding: 15px; border-radius: 10px;">
+                                <h4>Áreas críticas</h4>
+                                <ul>
+                                    <li>Márgenes del río Rímac</li>
+                                    <li>Zonas de alta pendiente</li>
+                                    <li>Áreas con asentamientos</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Marco Normativo -->
+        <div class="slide" id="slide-normative">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Marco Normativo</h2>
+                    <p>Legislación aplicable y problemas de cumplimiento</p>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Normativa</th>
+                                <th>Aplicación</th>
+                                <th>Problemas</th>
+                                <th>Cumplimiento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ley N° 27972</td>
+                                <td>Competencia MML en infraestructura vial</td>
+                                <td>Conflicto de competencias con MTC</td>
+                                <td>Parcial</td>
+                            </tr>
+                            <tr>
+                                <td>Ordenanza N° 2644-MML</td>
+                                <td>Emergencia vial e intervención directa</td>
+                                <td>Disputas legales con concesionaria</td>
+                                <td>Conflictivo</td>
+                            </tr>
+                            <tr>
+                                <td>Ley N° 27181</td>
+                                <td>Diseño vial metropolitano</td>
+                                <td>Falta integración con transporte público</td>
+                                <td>Deficiente</td>
+                            </tr>
+                            <tr>
+                                <td>D.L. N° 1012</td>
+                                <td>Contrato de concesión original</td>
+                                <td>Cuestionamientos por corrupción</td>
+                                <td>Fallido</td>
+                            </tr>
+                            <tr>
+                                <td>Ley N° 30225</td>
+                                <td>Licitación y contratación</td>
+                                <td>Opacidad en contratos</td>
+                                <td>Deficiente</td>
+                            </tr>
+                            <tr>
+                                <td>D.L. N° 1192</td>
+                                <td>Expropiación de predios</td>
+                                <td>Falta de reasentamiento</td>
+                                <td>Incompleto</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="slide" id="slide-precedence">
+           <div class="slide-content">
+               <div class="section-title">
+                   <h2 style="font-size: 2.2em; color: #87CEEB; margin-bottom: 10px;">Diagrama de Precedencia</h2>
+                   <p>Relaciones entre actividades del proyecto</p>
+               </div>
+               
+               <div class="precedence-container">
+                   <!-- Sección superior con información del proyecto -->
+                   <div class="project-info">
+                       <div class="project-summary">
+                           <h3>Resumen del Proyecto</h3>
+                           <p>La duración mínima del proyecto es de 86 meses, con una ruta crítica clara: A → C → D → E → F → G → H → I → J.</p>
+                           <p>La holgura de 24 meses en la Actividad B es estratégica y permite flexibilidad sin afectar la ruta crítica.</p>
+                           <p>Errores iniciales en los cálculos pueden invalidar todo el cronograma.</p>
+                           <p>El diagrama final de 86 meses representa la línea base ideal para controlar y monitorear el proyecto.</p>
+                       </div>
+                       
+                       <div class="activity-legend">
+                           <h3>Leyenda de Actividades</h3>
+                           <div class="legend-grid">
+                               <div class="legend-item"><span class="legend-id">A</span> Firma del Contrato de Concesión y Acta de Inicio</div>
+                               <div class="legend-item"><span class="legend-id">B</span> Estudios Definitivos de Ingeniería y Diseño Vial</div>
+                               <div class="legend-item"><span class="legend-id">C</span> Gestión de Suelos y Plan de Compensación y Reasentamiento</div>
+                               <div class="legend-item"><span class="legend-id">D</span> Liberación y Expropiación de Terrenos</div>
+                               <div class="legend-item"><span class="legend-id">E</span> Movimiento de Tierras y Preparación del Terreno</div>
+                               <div class="legend-item"><span class="legend-id">F</span> Construcción de Infraestructura Principal (autopista, puentes, pasos a desnivel)</div>
+                               <div class="legend-item"><span class="legend-id">G</span> Obras Complementarias (defensas ribereñas, drenaje, señalización)</div>
+                               <div class="legend-item"><span class="legend-id">H</span> Implementación del Plan de Mitigación Ambiental y Social</div>
+                               <div class="legend-item"><span class="legend-id">I</span> Supervisión, Pruebas y Ajustes Finales</div>
+                               <div class="legend-item"><span class="legend-id">J</span> Entrega de Obra y Inicio de Operación</div>
+                           </div>
+                       </div>
+                   </div>
+                   
+                   <!-- Sección inferior con el diagrama -->
+                   <div class="precedence-diagram">
+                       <img src="6.jpg" alt="Diagrama de Precedencia">
+                   </div>
+               </div>
+           </div>
+        </div>
+                
+        
+        <!-- Consecuencias -->
+        <div class="slide" id="slide-consequences">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Consecuencias</h2>
+                    <p>Impactos del proyecto inconcluso</p>
+                </div>
+                
+                <div class="cards-container">
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(231, 76, 60, 0.3);">
+                            <h3>Cumplimiento de objetivos</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Solo parcial. Mejora limitada en tráfico en tramos cortos. Obra inconclusa en 2025.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(46, 204, 113, 0.3);">
+                            <h3>Impactos sociales y territoriales</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Reforzamiento de la desigualdad urbana y fragmentación del tejido social en las zonas afectadas.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(155, 89, 182, 0.3);">
+                            <h3>Lecciones para Lima</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Falta de coordinación interinstitucional y ausencia de visión territorial y participación ciudadana.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header" style="background: rgba(241, 196, 15, 0.3);">
+                            <h3>Oportunidad perdida</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>No se aprovechó para regenerar zonas ribereñas ni integrar el proyecto a un modelo de ciudad sostenible.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Evaluación Crítica -->
+        <div class="slide" id="slide-evaluation">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Evaluación Crítica</h2>
+                    <p>Análisis final del proyecto</p>
+                </div>
+                
+                <div class="text-content">
+                    <p>La extensión de la Vía Ramiro Prialé es un ejemplo de cómo una obra concebida con criterios técnicos puede fracasar si no se planifica con visión urbana, social y ambiental. Más allá de los problemas de ejecución, el mayor desafío ha sido la falta de un enfoque sistémico que articule ciudad, movilidad y derecho a un desarrollo urbano justo.</p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0;">
+                        <div style="background: rgba(231, 76, 60, 0.2); padding: 25px; border-radius: 15px;">
+                            <h3 style="color: var(--accent);">Principales fallas</h3>
+                            <ul>
+                                <li>Falta de gestión preventiva del suelo</li>
+                                <li>Ausencia de participación ciudadana</li>
+                                <li>Diseño centrado solo en vehículos</li>
+                                <li>Coordinación interinstitucional deficiente</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: rgba(46, 204, 113, 0.2); padding: 25px; border-radius: 15px;">
+                            <h3 style="color: var(--accent);">Oportunidades perdidas</h3>
+                            <ul>
+                                <li>Integración con transporte público</li>
+                                <li>Revitalización de riberas del río</li>
+                                <li>Creación de espacios urbanos de calidad</li>
+                                <li>Desarrollo territorial equilibrado</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <p>Este caso invita a repensar el modelo de desarrollo urbano de Lima hacia uno más justo, resiliente y centrado en las personas.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Conclusiones -->
+        <div class="slide" id="slide-conclusions">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Conclusiones</h2>
+                    <p>Lecciones para el futuro del planeamiento urbano</p>
+                </div>
+                
+                <div class="bullet-points">
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-clipboard-check"></i> Planificación Integral</h3>
+                        <ul>
+                            <li>Necesidad de enfoque multisectorial</li>
+                            <li>Integración de aspectos sociales y ambientales</li>
+                            <li>Visión territorial a largo plazo</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-users"></i> Participación Ciudadana</h3>
+                        <ul>
+                            <li>Garantías de transparencia</li>
+                            <li>Equidad territorial</li>
+                            <li>Inclusión de comunidades afectadas</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-road"></i> Infraestructura Integral</h3>
+                        <ul>
+                            <li>Enfoque multimodal (peatones, ciclistas, transporte público)</li>
+                            <li>Integración con sistemas existentes</li>
+                            <li>Creación de espacios urbanos de calidad</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bullet-card">
+                        <h3><i class="fas fa-lightbulb"></i> Innovación en Gestión</h3>
+                        <ul>
+                            <li>Gestión preventiva del suelo</li>
+                            <li>Coordinación interinstitucional</li>
+                            <li>Mecanismos de financiamiento sostenibles</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recomendaciones -->
+        <div class="slide" id="slide-recommendations">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Recomendaciones</h2>
+                    <p>Propuestas para futuros proyectos</p>
+                </div>
+                
+                <div class="text-content">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h3 style="color: var(--accent); margin-bottom: 20px;">Pre-proyecto</h3>
+                            <ul>
+                                <li>Realizar estudios socioeconómicos profundos</li>
+                                <li>Gestionar terrenos con anticipación</li>
+                                <li>Diseñar planes de reasentamiento adecuados</li>
+                                <li>Implementar procesos de participación ciudadana</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 style="color: var(--accent); margin-bottom: 20px;">Ejecución</h3>
+                            <ul>
+                                <li>Establecer mecanismos de coordinación interinstitucional</li>
+                                <li>Implementar sistemas de monitoreo independientes</li>
+                                <li>Garantizar transparencia en contrataciones</li>
+                                <li>Mantener canales de comunicación con comunidades</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(46, 204, 113, 0.2); padding: 25px; border-radius: 15px; margin-top: 30px;">
+                        <h3 style="color: var(--accent);">Visión estratégica</h3>
+                        <p>Transformar cada proyecto de infraestructura en una oportunidad para crear ciudad, integrando movilidad, espacio público y desarrollo urbano sostenible, con enfoque en las personas y no solo en los vehículos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Perspectiva Futura -->
+        <div class="slide" id="slide-future">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Perspectiva Futura</h2>
+                    <p>Hacia un desarrollo urbano sostenible</p>
+                </div>
+                
+                <div class="section-content">
+                    <div class="text-content">
+                        <p>La experiencia de la Vía Ramiro Prialé ofrece valiosas lecciones para el futuro del planeamiento urbano en Lima:</p>
+                        
+                        <ul>
+                            <li><strong>Modelo de ciudad policéntrica:</strong> Descentralizar servicios y empleo para reducir desplazamientos</li>
+                            <li><strong>Movilidad sostenible:</strong> Priorizar transporte público, peatones y ciclistas</li>
+                            <li><strong>Gestión integral del suelo:</strong> Planificar el crecimiento urbano con anticipación</li>
+                            <li><strong>Resiliencia urbana:</strong> Incorporar criterios de adaptación al cambio climático</li>
+                            <li><strong>Gobernanza metropolitana:</strong> Fortalecer la coordinación entre municipios</li>
+                        </ul>
+                        
+                        <div style="background: rgba(52, 152, 219, 0.2); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <p>"La verdadera transformación urbana requiere repensar el modelo de desarrollo, priorizando la calidad de vida de las personas sobre la simple movilidad de vehículos"</p>
+                        </div>
+                    </div>
+                    <div class="image-content">
+                        <img src="7.jpg" alt="Perspectiva Futura">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bibliografía -->
+        <div class="slide" id="slide-bibliography">
+            <div class="slide-content">
+                <div class="section-title">
+                    <h2>Bibliografía</h2>
+                    <p>Fuentes y referencias consultadas</p>
+                </div>
+                
+                <div class="text-content" style="max-height: 60vh; overflow-y: auto; padding: 25px;">
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="color: var(--accent); margin-bottom: 15px;">Artículos y noticias</h3>
+                        <ul>
+                            <li>Revista Economía. (2025). El megaproyecto que Lima espera: obstáculos, conflictos y un nuevo avance.</li>
+                            <li>Tosso, V. (2025). Ramiro Prialé: luego de 8 años de espera, avanza la autopista de 40 kilómetros.</li>
+                            <li>Gonzales, C. (2024). Obras en la ampliación de la carretera Ramiro Prialé: trabajos de la Municipalidad de Lima desatan quejas vecinales.</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="color: var(--accent); margin-bottom: 15px;">Documentos oficiales</h3>
+                        <ul>
+                            <li>MTC - Ministerio de Transportes y Comunicaciones</li>
+                            <li>Municipalidad de Lima - Plan de Desarrollo Urbano</li>
+                            <li>Contraloría General de la República - Informe de obras paralizadas</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 style="color: var(--accent); margin-bottom: 15px;">Fuentes académicas</h3>
+                        <ul>
+                            <li>Chadwick, G. (1971). A Systems View of Planning.</li>
+                            <li>Faludi, A. (1973). Planning Theory.</li>
+                            <li>Sandoval Saavedra, Y. (2024). Falta de cobertura periodística de la ampliación de la avenida Ramiro Prialé.</li>
+                            <li>Hall, P. (1988). Cities of Tomorrow: An Intellectual History of Urban Planning.</li>
+                            <li>Simon, H. A. (1957). Models of Man: Social and Rational.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Agradecimientos -->
+        <div class="slide" id="slide-thanks">
+            <div class="slide-content">
+                <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+                    <h2 style="font-size: 3.5rem; margin-bottom: 30px; color: var(--accent);">¡Gracias!</h2>
+                    <p style="font-size: 1.8rem; margin-bottom: 40px;">¿Preguntas o comentarios?</p>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 15px; display: inline-block; backdrop-filter: blur(10px);">
+                        <h3 style="font-size: 1.8rem; margin-bottom: 15px; color: var(--accent);">Universidad de Ingeniería y Tecnología</h3>
+                        <p style="font-size: 1.5rem;">Planeamiento de Sistemas Urbanos</p>
+                        <p style="font-size: 1.2rem; margin-top: 15px;">Julio 2025</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Controles de navegación -->
+    <div class="navigation">
+        <button class="nav-btn" id="prev-btn"><i class="fas fa-arrow-left"></i></button>
+        <button class="nav-btn" id="next-btn"><i class="fas fa-arrow-right"></i></button>
+    </div>
+    
+    <!-- Barra de progreso -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    
+    <!-- Contador de diapositivas -->
+    <div class="slide-counter" id="slide-counter">1/20</div>
+    
+    <script>
+        // Variables globales
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const progressBar = document.getElementById('progress-bar');
+        const slideCounter = document.getElementById('slide-counter');
+        
+        // Inicializar presentación
+        function initPresentation() {
+            updateSlideCounter();
+            updateProgressBar();
+            setupNavigation();
+            setupKeyboardNavigation();
+        }
+        
+        // Actualizar contador de diapositivas
+        function updateSlideCounter() {
+            slideCounter.textContent = `${currentSlide + 1}/${totalSlides}`;
+        }
+        
+        // Actualizar barra de progreso
+        function updateProgressBar() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+        
+        // Configurar navegación
+        function setupNavigation() {
+            document.getElementById('prev-btn').addEventListener('click', goToPrevSlide);
+            document.getElementById('next-btn').addEventListener('click', goToNextSlide);
+        }
+        
+        // Configurar navegación por teclado
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', function(e) {
+                if(e.key === 'ArrowLeft') {
+                    goToPrevSlide();
+                } else if(e.key === 'ArrowRight' || e.key === ' ') {
+                    goToNextSlide();
+                }
+            });
+        }
+        
+        // Navegar a una diapositiva específica
+        function goToSlide(index) {
+            if(index < 0 || index >= totalSlides) return;
+            
+            // Actualizar clases de las diapositivas
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active', 'prev');
+                
+                if(i === index) {
+                    slide.classList.add('active');
+                } else if(i === currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+            
+            currentSlide = index;
+            updateSlideCounter();
+            updateProgressBar();
+            
+            // Scroll hacia arriba para asegurar visibilidad
+            window.scrollTo(0, 0);
+        }
+        
+        // Ir a la diapositiva anterior
+        function goToPrevSlide() {
+            if(currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+            }
+        }
+        
+        // Ir a la diapositiva siguiente
+        function goToNextSlide() {
+            if(currentSlide < totalSlides - 1) {
+                goToSlide(currentSlide + 1);
+            }
+        }
+        
+        // Función global para navegación desde índice
+        window.goToSlide = goToSlide;
+        
+        // Inicializar la presentación cuando el documento esté cargado
+        document.addEventListener('DOMContentLoaded', initPresentation);
+    </script>
+</body>
+</html>
